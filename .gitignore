@@ -1,0 +1,9 @@
+.vscode
+etc
+Include
+Lib
+Scripts
+share
+pip-selfcheck.json
+pyvenv.cfg
+__pycache__
