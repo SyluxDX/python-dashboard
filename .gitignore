@@ -1,7 +1,9 @@
 .vscode
 etc
+bin
+lib64
 Include
-Lib
+[Ll]ib
 Scripts
 share
 pip-selfcheck.json
