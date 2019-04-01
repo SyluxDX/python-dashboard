@@ -1,4 +1,4 @@
-""" Part 2 Tutorial dash """
+""" Part 3 Tutorial dash """
 from datetime import datetime
 import pandas_datareader as web
 import dash
