@@ -17,7 +17,8 @@ APP = dash.Dash(__name__)
 APP.layout = html.Div([dcc.Graph(id='live-graph', animate=True)\
 	, dcc.Interval(id='graph-update', interval=1000, n_intervals=0)])
 
-@APP.callback(dash.dependencies.Output('live-graph', 'figure'), [dash.dependencies.Input('graph-update', 'n_intervals')])
+@APP.callback(dash.dependencies.Output('live-graph', 'figure')\
+	, [dash.dependencies.Input('graph-update', 'n_intervals')])
 def update_graph_scatter(_):
 	""" Generate random data """
 	X.append(X[-1]+1)
