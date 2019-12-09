@@ -9,9 +9,10 @@ from subs_data import SubscriberData
 # Random data
 
 SUBS = SubscriberData()
+TIMER = 2 * 1000
 APP = dash.Dash(__name__)
 APP.layout = html.Div([dcc.Graph(id='live-graph', animate=True)\
-	, dcc.Interval(id='graph-update', interval=1000, n_intervals=0)])
+	, dcc.Interval(id='graph-update', interval=TIMER, n_intervals=0)])
 
 @APP.callback(dash.dependencies.Output('live-graph', 'figure')\
     , [dash.dependencies.Input('graph-update', 'n_intervals')])
