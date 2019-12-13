@@ -5,6 +5,10 @@ from datetime import datetime
 
 class SubscriberData():
     """ asdasd """
+    now = None
+    max = 0
+    min = 0
+    mean = [0]
     def __init__(self):
         # read Computed data
         if os.path.exists('data.json'):
@@ -24,6 +28,7 @@ class SubscriberData():
             os.remove('{}.log'.format(old))
 
         now = datetime.now().strftime('%Y%m%d')
+        self.now = now
         if os.path.exists('{}.log'.format(now)):
             aux = self._read_file(now)
             self.now = now
@@ -48,6 +53,7 @@ class SubscriberData():
         dmax.append(self.max)
         dmin.append(self.min)
         dmean.append(sum(self.mean)/5)
+        print(dmean)
 
         return dtime, dmax, dmin, dmean
 
@@ -57,6 +63,8 @@ class SubscriberData():
         self.min = min(self.min, data)
         self.mean.append(data)
         self.mean = self.mean[-5:]
+        with open('{}.log'.format(self.now), 'a') as logfp:
+            logfp.write('{}\n'.format(data))
 
     def _remove_old_data(self, keep_days=5):
         """ clear data and remain "keep_days" """

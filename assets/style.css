@@ -1,39 +1,10 @@
-#wrapper {
-    /* max-width:400px; */
-    width: inherit;
-    height: inherit;
-    /* height: 400px; */
-    background-color:#bfbfbf;
-    margin: 0 auto;
-    text-align: center;
+#stock-graph {
+    margin: 10px auto;
 }
 
-.box {
-    width: 150px;
-    height: 150px;
-    border: thin black solid;
+#search-table {
+    width: 30%;
+    margin: 10px auto;
+    vertical-align: top;
     display: inline-block;
-}
-
-#info_name {
-    background-color: #0074D9;
-    /* width: 100px;
-    height: 100px;
-    float:left;
-    display: inline-block; */
-}
-
-#info_time {
-    background-color: #3D9970;
-    /* width: 100px;
-    height: 100px;
-    float:right;
-    display: inline-block; */
-}
-
-#info_note {
-    margin: 0 auto;
-    background-color: #FFDC00;
-    width: 100px;
-    height: 100px;
 }

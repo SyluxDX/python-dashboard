@@ -1,6 +1,7 @@
 """ google api data retreive """
 
 import json
+from os.path import join
 import requests
 from pytrends.request import TrendReq
 
@@ -13,21 +14,21 @@ def get_youtube_data(part):
     aux = requests.get(URL.format(part, CHANNEL, API_KEY))
     return json.loads(aux.text)
 
-def get_channel_logo():
+def get_channel_logo(path='assets'):
     """ get chanel logo """
     # get image url
     jdata = get_youtube_data('snippet')
     image = jdata['items'][0]['snippet']['thumbnails']['default']['url']
-    print(image)
     # get image
-    with open('logo.png', 'wb') as imgfp:
+    filename = join(path, 'logo.png')
+    with open(filename, 'wb') as imgfp:
         imgfp.write(requests.get(image).content)
 
 def get_sub_count():
     """ get channel subscriber count """
     jdata = get_youtube_data('statistics')
     count = jdata['items'][0]['statistics']['subscriberCount']
-    return count
+    return int(count)
 
 def get_google_trends(region='portugal'):
     """ get top search """

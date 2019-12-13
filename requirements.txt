@@ -5,3 +5,4 @@ dash-table
 plotly
 requests
 pytrends
+yfinance
