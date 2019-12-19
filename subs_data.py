@@ -21,7 +21,6 @@ class SubscriberData():
         if os.path.exists('{}.log'.format(old)):
             self.old[old] = self._compute_log(old)
             # write old data to json
-            print(self.old)
             with open('data.json', 'w') as dfp:
                 json.dump(self.old, dfp, indent=1)
             # remove old file
@@ -53,7 +52,6 @@ class SubscriberData():
         dmax.append(self.max)
         dmin.append(self.min)
         dmean.append(sum(self.mean)/5)
-        print(dmean)
 
         return dtime, dmax, dmin, dmean
 

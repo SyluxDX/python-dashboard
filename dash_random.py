@@ -29,8 +29,17 @@ APP.layout = html.Div([dcc.Graph(id='stock-graph', animate=True)\
                 , style={'vertical-align': 'top', 'display': 'inline-block'})\
             , dcc.Graph(id='subs-graph', animate=True\
                     , style={'width': '60%', 'display': 'inline-block'})\
-            , dash_table.DataTable(id='search-table')\
+            , dash_table.DataTable(id='search-table'\
+                , style_as_list_view=True\
+                , style_header={'backgroundColor': 'rgb(30, 30, 30)'\
+                    , 'fontWeight': 'bold'\
+                    , 'fontFamily': 'sans-serif'}\
+                , style_cell={'backgroundColor': 'rgb(50, 50, 50)'\
+                    , 'color': 'white'\
+                    , 'padding': '10px'\
+                    , 'fontFamily': 'sans-serif'})\
             , dcc.Interval(id='updates', interval=TIMER, n_intervals=0)])])
+
 
 @APP.callback([dash.dependencies.Output('stock-graph', 'figure')\
     , dash.dependencies.Output('subs-graph', 'figure')\
@@ -42,7 +51,11 @@ def update_data(_):
     # Update stock
     data = get_stock_data(STOCK)
     stock_update = {'data':[{'x': data.index, 'y': data.values, 'type': 'line', 'name':data.name}]\
-        , 'layout': {'title': data.name, 'yaxis': {'title':'USD'}}}
+        , 'layout': {'title': data.name, 'yaxis': {'title':'USD'}\
+            , 'paper_bgcolor': '#000000', 'plot_bgcolor': '#000000'\
+            , 'font': {'color': '#FFFFFF'}\
+            , 'xaxis': {'gridcolor': '#333333', 'linecolor': '#cccccc'}\
+            , 'yaxis': {'gridcolor': '#333333', 'linecolor': '#cccccc'}}}
 
     # Update Subs count
     SUBS.add_data_points(google_api.get_sub_count())
@@ -51,7 +64,11 @@ def update_data(_):
             {'x':data[0], 'y':data[3], 'type':'line', 'name':'Mean', 'marker':{'color': 'blue'}}\
             , {'x':data[0], 'y':data[2], 'type':'bar', 'name':'Min', 'marker':{'color': 'green'}}\
             , {'x':data[0], 'y':data[1], 'type':'bar', 'name':'Max', 'marker':{'color': 'orange'}}]\
-            , 'layout':{'title':'Subscribers Count for {}'.format(google_api.CHANNEL)}}
+            , 'layout':{'title':'Subscribers Count for {}'.format(google_api.CHANNEL)\
+                , 'paper_bgcolor': '#000000', 'plot_bgcolor': '#000000'\
+                , 'font': {'color': '#FFFFFF'}\
+                , 'xaxis': {'gridcolor': '#333333', 'linecolor': '#cccccc'}\
+                , 'yaxis': {'gridcolor': '#333333', 'linecolor': '#cccccc'}}}
 
     # Update Top Search
     data = google_api.get_google_trends().head(10)

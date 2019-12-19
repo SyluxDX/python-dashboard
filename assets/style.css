@@ -1,5 +1,13 @@
+body {
+    background-color: black;
+}
+
 #stock-graph {
     margin: 10px auto;
+}
+
+#wrapper {
+    background-color: black;
 }
 
 #search-table {
