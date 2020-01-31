@@ -6,9 +6,9 @@ from datetime import datetime
 class SubscriberData():
     """ asdasd """
     now = None
-    max = 0
-    min = 0
-    mean = [0]
+    max = None
+    min = None
+    mean = list()
     def __init__(self):
         # read Computed data
         if os.path.exists('data.json'):
@@ -17,15 +17,9 @@ class SubscriberData():
         else:
             self.old = dict()
 
-        old = str(int(datetime.now().strftime('%Y%m%d'))-1)
-        if os.path.exists('{}.log'.format(old)):
-            self.old[old] = self._compute_log(old)
-            # write old data to json
-            with open('data.json', 'w') as dfp:
-                json.dump(self.old, dfp, indent=1)
-            # remove old file
-            os.remove('{}.log'.format(old))
-
+        # read previous logfile
+        self.reload_previous_data()
+        # read current logfile
         now = datetime.now().strftime('%Y%m%d')
         self.now = now
         if os.path.exists('{}.log'.format(now)):
@@ -34,6 +28,19 @@ class SubscriberData():
             self.max = max(aux)
             self.min = min(aux)
             self.mean = aux[-5:]
+
+    def reload_previous_data(self):
+        """ asdasdasd """
+        old = str(int(datetime.now().strftime('%Y%m%d'))-1)
+        if os.path.exists('{}.log'.format(old)):
+            self.old[old] = self._compute_log(old)
+            # remove old data
+            self._remove_old_data()
+            # write old data to json
+            with open('data.json', 'w') as dfp:
+                json.dump(self.old, dfp, indent=1)
+            # remove old file
+            os.remove('{}.log'.format(old))
 
     def get_data_points(self):
         """ asdasdasd """
@@ -47,21 +54,43 @@ class SubscriberData():
             dmax.append(self.old[i]['max'])
             dmin.append(self.old[i]['min'])
             dmean.append(self.old[i]['mean'])
-        # dtime.append(int(self.now))
         dtime.append('{}-{}-{}'.format(self.now[:4], self.now[4:6], self.now[6:]))
         dmax.append(self.max)
         dmin.append(self.min)
-        dmean.append(sum(self.mean)/5)
+        dmean.append(sum(self.mean)/len(self.mean))
 
         return dtime, dmax, dmin, dmean
 
     def add_data_points(self, data):
         """ Add data points """
-        self.max = max(self.max, data)
-        self.min = min(self.min, data)
-        self.mean.append(data)
-        self.mean = self.mean[-5:]
-        with open('{}.log'.format(self.now), 'a') as logfp:
+        now = datetime.now().strftime('%Y%m%d')
+        if self.max is None:
+            self.max = data
+            self.min = data
+            self.mean = [data]
+        else:
+            # new day
+            if self.now != now:
+                # write data to old (json)
+                self.old[self.now] = {'max': self.max, 'min': self.min, 'mean': self.mean}
+                with open('data.json', 'w') as dfp:
+                    json.dump(self.old, dfp, indent=1)
+                # remove older data
+                self._remove_old_data()
+                os.remove('{}.log'.format(self.now))
+
+                # get data as new day
+                self.now = now
+                self.max = data
+                self.min = data
+                self.mean = [data]
+            else:
+                self.max = max(self.max, data)
+                self.min = min(self.min, data)
+                self.mean.append(data)
+                self.mean = self.mean[-5:]
+        
+        with open('{}.log'.format(now), 'a') as logfp:
             logfp.write('{}\n'.format(data))
 
     def _remove_old_data(self, keep_days=5):
