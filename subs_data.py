@@ -72,7 +72,7 @@ class SubscriberData():
             # new day
             if self.now != now:
                 # write data to old (json)
-                self.old[self.now] = {'max': self.max, 'min': self.min, 'mean': self.mean}
+                self.old[self.now] = {'max': self.max, 'min': self.min, 'mean': sum(self.mean)/len(self.mean)}
                 with open('data.json', 'w') as dfp:
                     json.dump(self.old, dfp, indent=1)
                 # remove older data
