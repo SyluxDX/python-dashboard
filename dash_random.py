@@ -19,7 +19,7 @@ def get_stock_data(name, period='1d', interval='1m'):
     data = stock.history(period, interval)
 
     return STOCKDATA(stock.info['longName'],\
-        data.Close.index.values,\
+        data.Close.index.values.astype(str),\
         data.Close.values)
 
 # Page Layout
