@@ -14,6 +14,10 @@ class SubscriberData():
         if os.path.exists('data.json'):
             with open('data.json', 'r') as dfp:
                 self.old = json.load(dfp)
+            if self._remove_old_data():
+                print("clearning data on first read")
+                with open('data.json', 'w') as dfp:
+                    json.dump(self.old, dfp, indent=1)
         else:
             self.old = dict()
 
@@ -97,8 +101,10 @@ class SubscriberData():
         """ clear data and remain "keep_days" """
         keys = list(self.old.keys())
         keys.sort()
+        prev = len(keys)
         for i in range(len(keys)-keep_days):
             _ = self.old.pop(keys[i])
+        return prev != len(self.old.keys())q
 
     def _read_file(self, filename):
         """ read file and return list """
